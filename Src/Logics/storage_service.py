@@ -3,6 +3,7 @@ from Src.Logics.process_factory import process_factory
 from Src.Logics.storage_prototype import storage_prototype
 from Src.exceptions import argument_exception, exception_proxy
 from datetime import datetime
+from Src.Models.nomenclature_model import nomenclature_model
 import json
 
 class storage_service:
@@ -64,3 +65,44 @@ class storage_service:
         )
         
         return result
+    def create_turns_two(self,nom:nomenclature_model):
+        exception_proxy.validate(nom)
+        
+        
+        if nom == "":
+            raise argument_exception("Некорректно переданы параметры!")
+        
+        # Фильтруем      
+        prototype = storage_prototype(  self.__data )  
+        filter = prototype.filter(nom)
+            
+        # Подобрать процессинг    
+        key_turn = process_factory.turn_key()
+        processing = process_factory().create( key_turn  )
+    
+        # Обороты
+        turns =  processing().process( filter.data )
+        return turns
+    def create_turns(self, id ) -> dict:
+        """
+            Получить обороты за период
+        Args:
+            start_period (datetime): _description_
+            stop_period (datetime): _description_
+
+        Returns:
+            dict: _description_
+        """
+        
+      
+        # Фильтруем      
+        prototype = storage_prototype(  self.__data )  
+        filter = prototype.filter( id)
+            
+        # Подобрать процессинг    
+        key_turn = process_factory.turn_key()
+        processing = process_factory().create( key_turn  )
+    
+        # Обороты
+        turns =  processing().process( filter.data )
+        return turns

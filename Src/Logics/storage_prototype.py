@@ -1,7 +1,7 @@
 from Src.exceptions import argument_exception
 from Src.errors import error_proxy
 from datetime import datetime
-
+from Src.Models.nomenclature_model import nomenclature_model
 
 #
 # Прототип для обработки складских транзакций
@@ -34,18 +34,43 @@ class storage_prototype(error_proxy):
             
          
         if not self.is_empty:
-            return self.__data
+            return storage_prototype(result)
         
         result = []
         for item in self.__data:
             if item.period > start_period and item.period <= stop_period:
                 result.append(item)
+                    
                 
         return   storage_prototype( result )
-    
+    def filter_nomenclature(self,nom:nomenclature_model):
+        """
+        Фильтурем по нуменклатуре
+        """
+        result_nom = []
+        if len(self.__data) <= 0:
+            self.error = "Некорректно переданы параметры!"
+        if nom == "":
+            self.error = "Не передана номенклатура"
+        elif not self.is_empty:
+            return self.__data
+        else:
+            result_nom.append(nom)
+        
+    def filter(self,id):
+        
+            
+        return storage_prototype([self.__data[id]])
+
+                    
+                
+        
+
+        
     @property
     def data(self):
         return self.__data         
+    
                 
                    
             
