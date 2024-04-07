@@ -57,7 +57,19 @@ def get_turns():
     data = storage_service( source_data   ).create_turns( start_date, stop_date )      
     result = storage_service.create_response( data, app )
     return result
-      
+@app.route('/api/storage/<nomenclature_id>/turns', methods=['GET'])
+def get_storage_turns(nomenclature_id):        
+    # Получить параметры
+    args = request.args
+    
+          
+    source_data = start.storage.data[  storage.storage_transaction_key()   ]      
+    data = storage_service( source_data  ).create_turns( int(nomenclature_id) )      
+    result = storage_service.create_response( data, app )
+    return result
+@app.route('/')
+def hello():
+    return 'Привет, мир!'     
 
 if __name__ == "__main__":
     app.run(debug = True)
