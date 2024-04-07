@@ -7,7 +7,7 @@ from Src.Logics.start_factory import start_factory
 from datetime import datetime
 from Src.Logics.storage_service import storage_service
 from Src.Models.nomenclature_model import nomenclature_model
-
+from Src.settings import settings
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
@@ -89,6 +89,36 @@ def get_turns_nomenclature(nomenclature_id):
     data = storage_service( transactions_data  ).create_turns_by_nomenclature( start_date, stop_date, nomenclature )      
     result = storage_service.create_response( data, app )
     return result      
+@app.route("/api/storage/turns_block", methods = ["GET"] )
+def change_block_period():
+    # Получить параметры
+    args = request.args
+    if "block_period" not in args.keys():
+        return error_proxy.create_error_response(app, "Необходимо передать параметры: block_period")
+        
+    
+    
+    block = datetime.strptime(args["block_period"], "%Y-%m-%d")
+    
+          
+    source_data = start.storage.data[  storage.storage_transaction_key()   ]      
+    data = storage_service( source_data   ).create_turns_block( block )      
+    result = storage_service.create_response( data, app )
+    return result
+
+@app.route("/api/nomenclature", methods = ["GET"] )
+def change_block_period():
+    return "test"
+
+@app.route("/api/nomenclature", methods = ["PUT"] )
+def change_block_period():
+    return "test"
+@app.route("/api/nomenclature", methods = ["PATCH"] )
+def change_block_period():
+    return "test"
+@app.route("/api/nomenclature", methods = ["DELETE"] )
+def change_block_period():
+    return "test"
 
 if __name__ == "__main__":
     app.run(debug = True)

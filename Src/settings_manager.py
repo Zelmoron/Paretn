@@ -1,11 +1,11 @@
 import os
 import json
 import uuid
-
+from Src.exceptions import operation_exception
 from Src.settings import settings
 from Src.errors import error_proxy
 from Src.exceptions import exception_proxy
-
+from Src.Logics.convert_factory import convert_factory
 
 #
 # Менеджер настроек
@@ -116,5 +116,22 @@ class settings_manager(object):
         """
         return self._error
 
-
+    def save(self):
+        """
+            Сохранить данные в хранилище
+        Raises:
+            operation_exception: _description_
+        """
+        try:
+            factory = convert_factory()
+            with open(self.__storage_file, "w") as write_file:
+                data = factory.serialize( self.data )
+                json_text = json.dumps(data, sort_keys = True, indent = 4, ensure_ascii = False)  
+                write_file.write(json_text)
+                
+                return True
+        except Exception as ex:
+            raise operation_exception(f"Ошибка при записи файла {self.__storage_file}\n{ex}")
+            
+        return False
     
