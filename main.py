@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request,jsonify
 from Src.settings_manager import settings_manager
 from Src.Storage.storage import storage
 from Src.errors import error_proxy
@@ -106,19 +106,64 @@ def change_block_period():
     result = storage_service.create_response( data, app )
     return result
 
-@app.route("/api/nomenclature", methods = ["GET"] )
-def change_block_period():
-    return "test"
-
 @app.route("/api/nomenclature", methods = ["PUT"] )
-def change_block_period():
-    return "test"
-@app.route("/api/nomenclature", methods = ["PATCH"] )
-def change_block_period():
-    return "test"
-@app.route("/api/nomenclature", methods = ["DELETE"] )
-def change_block_period():
-    return "test"
+def add_nomenclature_():
+    try:
+        data = request.get_json()
+        # data = json.load(json_text)
+
+        object = nomenclature_model().load(data)
+        start.storage.data[storage.nomenclature_key()].append(object)
+        start.storage.save()
+
+        return  storage.create_response(app,"ok")
+    except Exception as ex:
+        return error_proxy.create_error_response(app, f"Ошибка обработки: {ex} ", 500)
+
+
+@app.route("/api/nomenclature", methods=["GET"])
+def get_nomenclature():
+    try:
+        nomenclature_list = start.storage.data[storage.nomenclature_key()]
+        return jsonify(nomenclature_list)
+    except Exception as ex:
+        return error_proxy.create_error_response(app, f"Ошибка обработки: {ex} ", 500)
+
+
+@app.route("/api/nomenclature", methods=["PATCH"])
+def update_nomenclature():
+    try:
+        data = request.get_json()
+        nomenclature_id = data.get("id")
+
+        for obj in start.storage.data[storage.nomenclature_key()]:
+            if obj.id == nomenclature_id:
+                obj.update(data)
+                start.storage.save()
+                return storage.create_response(app, "ok")
+
+        return error_proxy.create_error_response(app, "Номенклатура не найдена", 404)
+
+    except Exception as ex:
+        return error_proxy.create_error_response(app, f"Ошибка обработки: {ex} ", 500)
+
+
+@app.route("/api/nomenclature", methods=["DELETE"])
+def delete_nomenclature():
+    try:
+        data = request.get_json()
+        nomenclature_id = data.get("id")
+
+        for obj in start.storage.data[storage.nomenclature_key()]:
+            if obj.id == nomenclature_id:
+                start.storage.data[storage.nomenclature_key()].remove(obj)
+                start.storage.save()
+                return storage.create_response(app, "ok")
+
+        return error_proxy.create_error_response(app, "Номенклатура не найдена", 404)
+
+    except Exception as ex:
+        return error_proxy.create_error_response(app, f"Ошибка обработки: {ex} ", 500)
 
 if __name__ == "__main__":
     app.run(debug = True)
