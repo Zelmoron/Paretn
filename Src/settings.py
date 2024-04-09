@@ -8,7 +8,7 @@ class settings():
     _short_name = ""
     _first_start = True
     _mode = "csv"
-    
+    _block_period = ""
     
     @property
     def inn(self):
@@ -66,3 +66,16 @@ class settings():
         
         self._mode = value
     
+    @property     
+    def block_period(self):
+        """
+            Короткое наименование организации
+        Returns:
+            str:
+        """
+        return self._block_period
+    
+    @block_period.setter
+    def block_period(self, value:str):
+        exception_proxy.validate(value, str)
+        self._block_period = value

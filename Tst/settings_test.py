@@ -54,6 +54,14 @@ class settings_test(unittest.TestCase):
         # Проверки
         assert manager.error.is_empty == False
         
+    def test_fail_save_settings(self):
+        #Подготовка
+        manager = settings_manager()
+        #Действие
+        manager.save('test.json')
+
+        assert manager.error.is_empty == False
+        
         
             
 
