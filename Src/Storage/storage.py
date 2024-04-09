@@ -48,7 +48,7 @@ class storage():
             if not os.path.exists(data_file):
                 raise operation_exception(f"Невозможно загрузить данные! Не найден файл {data_file}")
 
-            with open(data_file, "r", encoding='unicode_escape') as read_file:
+            with open(data_file, "r") as read_file:
                 source =  json.load(read_file)   
                 
                 self.__data = {}

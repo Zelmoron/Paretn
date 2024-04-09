@@ -43,19 +43,6 @@ class storage_service:
         
     # Набор основных методов    
         
-
-    def create_turns_block(self,block:datetime)->list:
-        exception_proxy.validate(block, datetime)
-        
-        
-        
-        
-        # Фильтруем      
-        prototype = storage_prototype(  self.__data )  
-        filter = prototype.filter_by_block(block)
-        
-        return self.__processing( filter. data )
-        
     def create_turns(self, start_period: datetime, stop_period:datetime ) -> list:
         """
             Получить обороты за период

@@ -49,25 +49,8 @@ class storage_prototype(error_proxy):
                 result.append(item)
                 
         return   storage_prototype( result )
-    def filter_by_block(self,block:datetime):
-        self.clear()
-        
-        exception_proxy.validate(block, datetime)
-        
-        if len(self.__data) <= 0:
-            self.error = "Некорректно переданы параметры!"
-            
-            
-         
-        if not self.is_empty:
-            return self.__data
-        
-        result = []
-        for item in self.__data:
-            if item.period > block:
-                result.append(item)
-                
-        return   storage_prototype( result )
+    
+    
     def filter_by_nomenclature(self, nomenclature:  nomenclature_model):
         """
             Отфильтровать по номенклатуре
