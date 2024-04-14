@@ -48,7 +48,7 @@ class storage():
             if not os.path.exists(data_file):
                 raise operation_exception(f"Невозможно загрузить данные! Не найден файл {data_file}")
 
-            with open(data_file, "r") as read_file:
+            with open(data_file, "r", encoding='unicode_escape') as read_file:
                 source =  json.load(read_file)   
                 
                 self.__data = {}
@@ -74,7 +74,7 @@ class storage():
         """
         try:
             factory = convert_factory()
-            with open(self.__storage_file, "w") as write_file:
+            with open(self.__storage_file, "w",encoding='unicode_escape') as write_file:
                 data = factory.serialize( self.data )
                 json_text = json.dumps(data, sort_keys = True, indent = 4, ensure_ascii = False)  
                 write_file.write(json_text)

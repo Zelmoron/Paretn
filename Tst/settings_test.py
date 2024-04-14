@@ -55,8 +55,17 @@ class settings_test(unittest.TestCase):
         assert manager.error.is_empty == False
         
         
-            
+    def test_save(self):
+        # Подготовка
+        manager = settings_manager()
+        result = manager.data
 
+        try:
+            flag=manager.save()
+            assert flag==True
+        except Exception as ex:
+            print(ex)
+            assert False == True
         
 
  

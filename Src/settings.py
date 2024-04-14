@@ -1,5 +1,5 @@
 from Src.exceptions import exception_proxy
-
+from datetime import datetime
 #
 # Класс для описания настроек
 #
@@ -8,7 +8,7 @@ class settings():
     _short_name = ""
     _first_start = True
     _mode = "csv"
-    
+    __block_period = None
     
     @property
     def inn(self):
@@ -65,4 +65,10 @@ class settings():
         exception_proxy.validate(value, str)
         
         self._mode = value
-    
+    @property
+    def block_period(self):
+        return self.__block_period
+    @block_period.setter
+    def block_period(self,value: str):
+        exception_proxy.validate(value,str)
+        self.__block_period = datetime.strptime(value, "%Y-%m-%d")
