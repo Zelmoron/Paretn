@@ -62,7 +62,8 @@ class storage_service:
         # Фильтруем      
         prototype = storage_prototype(  self.__data )  
         filter = prototype.filter_by_period( start_period, stop_period)
-        
+        if stop_period < start_period:
+            start_period,stop_period = stop_period,start_period
         return self.__processing( filter. data )
             
         
@@ -88,6 +89,8 @@ class storage_service:
         prototype = storage_prototype(  self.__data )  
         filter = prototype.filter_by_period( start_period, stop_period)
         filter = filter.filter_by_nomenclature( nomenclature )
+        if stop_period < start_period:
+            start_period,stop_period = stop_period,start_period
         if not filter.is_empty:
             raise operation_exception(f"Невозможно сформировать обороты по указанным данных: {filter.error}")
             
@@ -198,3 +201,26 @@ class storage_service:
         )
         
         return result
+    def create_blocked_turns(self,stop_period:datetime):
+        """
+            Получить обороты за период
+        Args:
+            start_period (datetime): Начало
+            stop_period (datetime): Окончание
+
+        Returns:
+            list: обороты за период
+        """
+        start_period = "1900-01-01"
+        exception_proxy.validate(start_period, datetime)
+        exception_proxy.validate(stop_period, datetime)
+        
+        if start_period > stop_period:
+            raise argument_exception("Некорректно переданы параметры!")
+        
+        # Фильтруем      
+        prototype = storage_prototype(  self.__data )  
+        filter = prototype.filter_by_period( start_period, stop_period)
+        turns = self.__processing( filter. data )
+        return turns
+    
