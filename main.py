@@ -89,6 +89,8 @@ def get_turns_nomenclature(nomenclature_id):
     data = storage_service( transactions_data  ).create_turns_by_nomenclature( start_date, stop_date, nomenclature )      
     result = storage_service.create_response( data, app )
     return result      
-
+@app.route("/api/storage/<block_period>/turns", methods = ["GET"] )
+def chahge_block_period():
+     
 if __name__ == "__main__":
     app.run(debug = True)

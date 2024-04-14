@@ -1,7 +1,8 @@
 import os
 import json
 import uuid
-
+from Src.exceptions import operation_exception
+from Src.Logics.convert_factory import convert_factory
 from Src.settings import settings
 from Src.errors import error_proxy
 from Src.exceptions import exception_proxy
@@ -87,6 +88,22 @@ class settings_manager(object):
                 if not isinstance(value, list) and not isinstance(value, dict):
                     setattr(self._settings, field, value)
                 
+    def save(self):
+        """
+            Сохранить данные в json файл настроек
+        Raises:
+            operation_exception: _description_
+        """
+        try:
+            factory = convert_factory()
+            with open(self._settings_file_name, "w") as write_file:
+                data = factory.serialize( self._settings )
+                json_text = json.dumps(data, sort_keys = True, indent = 4, ensure_ascii = False)  
+                write_file.write(json_text)
+                
+                return True
+        except Exception as ex:
+            raise operation_exception(f"Ошибка при записи файла {self._settings_file_name}\n{ex}")
         
     
     @property    
