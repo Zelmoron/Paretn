@@ -4,7 +4,7 @@ import os
 from Src.exceptions import operation_exception
 from Src.Logics.convert_factory import convert_factory
 from Src.reference import reference
-
+from Src.Logics.storage_service import storage_service
 
 #
 # Класс хранилище данных
@@ -104,7 +104,10 @@ class storage():
             _type_: _description_
         """
         return "group_model"
-      
+    @staticmethod
+    def turns_key():
+        "Списоак оборотов"
+        return "turns"
       
     @staticmethod
     def storage_transaction_key():
@@ -149,4 +152,17 @@ class storage():
             if method.__name__.endswith("_key") and callable(method):
                 keys.append(method())
         return keys
-    
+    def add(self):
+        source = storage_service.create_blocked_turns()        
+        self.__data = {}
+        for key in storage.storage_keys(storage):
+            if key in source.keys():
+                source_data = source[key]
+                self.__data[key] = []
+                
+                for item in source_data:
+                    object = self.__mapping[key]
+                    instance = object().load(item)
+                    self.__data[key].append(instance)
+
+        

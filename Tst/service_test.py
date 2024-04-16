@@ -168,8 +168,36 @@ class service_test(unittest.TestCase):
         assert start_len_transaction < stop_len_transaction   
         
             
+    def test_check_blocked_turns(self):
+        manager = settings_manager()
+        start = start_factory(manager.settings)
+        start.create()
+        key = storage.storage_transaction_key()
+        data = start.storage.data[ key ]
+        service = storage_service(data)
+        start_date = datetime.strptime("1900-01-01", "%Y-%m-%d")
+        stop_date = datetime.strptime("2024-01-10", "%Y-%m-%d")
+        save =storage.save()
+        # Действие
+        result = service.create_turns(start_date, stop_date)
         
-            
-            
+        # Проверки
+        assert len(result) > 0     
+        assert save == True
+    def test_check_replace(self):
+        manager = settings_manager()
+        start = start_factory(manager.settings)
+        start.create()
+        key = storage.storage_transaction_key()
+        data = start.storage.data[ key ]
+        service = storage_service(data)
+        start_date = datetime.strptime("2024-01-10", "%Y-%m-%d")
+        stop_date = datetime.strptime("1900-01-01", "%Y-%m-%d")
+        
+        # Действие
+        result = service.create_turns(start_date, stop_date)
+        
+        # Проверки
+        assert len(result) > 0           
         
         
