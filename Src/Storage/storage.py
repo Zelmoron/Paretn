@@ -1,10 +1,10 @@
 import json
 import os
 
-from Src.exceptions import operation_exception
+from Src.exceptions import operation_exception, exception_proxy
 from Src.Logics.convert_factory import convert_factory
 from Src.reference import reference
-from Src.Logics.storage_service import storage_service
+
 
 #
 # Класс хранилище данных
@@ -48,7 +48,7 @@ class storage():
             if not os.path.exists(data_file):
                 raise operation_exception(f"Невозможно загрузить данные! Не найден файл {data_file}")
 
-            with open(data_file, "r", encoding='unicode_escape') as read_file:
+            with open(data_file, "r") as read_file:
                 source =  json.load(read_file)   
                 
                 self.__data = {}
@@ -74,7 +74,7 @@ class storage():
         """
         try:
             factory = convert_factory()
-            with open(self.__storage_file, "w",encoding='unicode_escape') as write_file:
+            with open(self.__storage_file, "w") as write_file:
                 data = factory.serialize( self.data )
                 json_text = json.dumps(data, sort_keys = True, indent = 4, ensure_ascii = False)  
                 write_file.write(json_text)
@@ -85,6 +85,32 @@ class storage():
             
         return False    
 
+ 
+    def save_blocked_turns(self, turns:list):
+        """
+            Сохранить новый список заблокированных оборотов
+        """        
+        exception_proxy.validate(turns, list)
+        if len(turns) > 0:
+            self.__data[ storage.blocked_turns_key() ] = turns
+            
+            
+    @staticmethod        
+    def  save_blocked_turns(turns:list):
+        """
+            Сохранить новый список заблокированных оборотов (статический вызов)
+        """       
+        object = storage()
+        object.save_blocked_turns(turns) 
+        
+    @staticmethod
+    def blocked_turns_key():
+        """
+            Ключ для хранения заблокированных оборотов
+        Returns:
+            _type_: _description_
+        """
+        return "storage_row_turn_model"    
  
     @staticmethod
     def nomenclature_key():
@@ -104,10 +130,7 @@ class storage():
             _type_: _description_
         """
         return "group_model"
-    @staticmethod
-    def turns_key():
-        "Списоак оборотов"
-        return "turns"
+      
       
     @staticmethod
     def storage_transaction_key():
@@ -152,17 +175,22 @@ class storage():
             if method.__name__.endswith("_key") and callable(method):
                 keys.append(method())
         return keys
-    def add(self):
-        source = storage_service.create_blocked_turns()        
-        self.__data = {}
-        for key in storage.storage_keys(storage):
-            if key in source.keys():
-                source_data = source[key]
-                self.__data[key] = []
-                
-                for item in source_data:
-                    object = self.__mapping[key]
-                    instance = object().load(item)
-                    self.__data[key].append(instance)
+    
 
+    def Ok( app):
+        """"
+            Сформировать данные для сервера
+        """
+        if app is None:
+            raise operation_exception("Некорректно переданы параметры!")
+
+        json_text = json.dumps({"status" : "ok"}, sort_keys = True, indent = 4,  ensure_ascii = False)  
+
+        # Подготовить ответ    
+        result = app.response_class(
+            response =   f"{json_text}",
+            status = 200,
+            mimetype = "application/json; charset=utf-8"
+        )
         
+        return result
