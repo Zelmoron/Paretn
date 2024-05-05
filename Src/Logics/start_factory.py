@@ -6,6 +6,7 @@ from Src.reference import reference
 from Src.Models.receipe_model import receipe_model
 from Src.Models.storage_row_model import storage_row_model
 from Src.Models.storage_model import storage_model
+from Src.Logics.Services.post_proces_sevices import post_processing_service
 
 # Системное
 from Src.settings import settings
@@ -16,6 +17,7 @@ from Src.exceptions import exception_proxy, operation_exception, argument_except
 # Класс для обработки данных. Начало работы приложения
 #
 class start_factory:
+    __observer: post_processing_service = None
     __oprions: settings = None
     __storage: storage = None
     
