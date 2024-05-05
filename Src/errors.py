@@ -1,15 +1,53 @@
 import json
-
+from datetime import datetime
 #
 # Класс для обработки и хранения текстовой информации об ошибке
 #
 class error_proxy:
-    " Текст с описание ошибки "
-    _error_text = ""
+    __period=None
+    __type=""
+    """
+    Текст с описанием ошибки"""
+    __error_text=""
+    __error_source=""
+    __if_error=False
+
+
+    def __init__ (self, error_text: str="", error_source:str=""):
+        self.__period=datetime.now()
+        self.source=error_source
+        self.text=error_text
+
+    @property
+    def text(self):
+        return self.__error_text
+
+
     
-    def __init__(self, exception: Exception = None):
-        if exception is not None:
-            self.set_error(exception)
+    @text.setter
+    def text(self,value:str):
+        if not isinstance(value,str):
+            raise Exception("Error")
+
+        
+        if value.strip()==" ":
+            self.__if_error=False
+            return 0
+    @property
+    
+    def source(self):
+        return self.__error_source
+
+    
+    @source.setter
+    def source(self,value:str):
+        if not isinstance(value,str):
+            raise Exception("Error")
+
+        if value.strip()==" ":
+            self.__if_error=False
+            return 0
+        
     
     @property
     def error(self):
@@ -91,4 +129,20 @@ class error_proxy:
         )    
         
         return result
+    
+    @property
+    def period(self):
+        return self.__period
+
+
+    @property 
+    def log_type(self):
+        return self.__type
+
+
+    @log_type.setter
+    def log_type(self,value:str):
+        if not isinstance(value,str):
+            raise Exception("Error")
+        self.__type=value
             
