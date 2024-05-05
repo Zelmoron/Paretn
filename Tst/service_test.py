@@ -78,8 +78,7 @@ class service_test(unittest.TestCase):
     #
     # Проверить работу метода create_turns
     #
-    def test_check_create_turns(self):
-        # Подготовка
+         # Подготовка
         manager = settings_manager()
         start = start_factory(manager.settings)
         start.create()
