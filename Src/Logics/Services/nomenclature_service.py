@@ -16,12 +16,13 @@ from Src.Logics.storage_observer import storage_observer
 from Src.Models.event_type import event_type
 from Src.Logics.Services.post_proces_sevices import post_processing_service
 from Models.nomenclature_model import nomenclature_model
+from Src.Logics.Services import service
+from Src.Models.nomenclature_model import nomenclature_model
+from Src.Logics.convert_factory import convert_factory
+from Src.Models.log_models import log_type
 
-from Src.Models.nomenclature_group_model import nomenclature_group_model
 
-
-
-class nomenclature_service(abstract_sevice):
+class nomenclature_service(service):
 
     # конструктор
     def __init__ (self,data:list):
@@ -34,6 +35,8 @@ class nomenclature_service(abstract_sevice):
 
     # возвращаем массив с добавленной номенклатурой
     def add_nom(self, nom: nomenclature_model):
+        storage_observer.raise_event(event_type.make_log(log_type.log_type_debug(),
+                                                         "добавление номенклатуры", "nomenclature_service.py/add_nom"))
         self.__data.append(nom)
         return self.__data
 
@@ -43,6 +46,8 @@ class nomenclature_service(abstract_sevice):
             if cur_nom.id == nom.id:
                 self.__data[index] = nom
                 break
+        storage_observer.raise_event(event_type.make_log(log_type.log_type_debug(),
+                                                         "изменение номенклатуры", "nomenclature_service.py/change_nome"))
         return self.__data
 
     # ищем по айди и передаём
@@ -53,14 +58,13 @@ class nomenclature_service(abstract_sevice):
 
         for cur_nom in self.__data:
             if id == cur_nom.id:
-                reference = reference_conventor(
+                reference = convert_factory(
                     nomenclature_model,
                     error_proxy,
-                    nomenclature_group_model,
-                    range_model,
-                    storage_journal_row,
-                    storage_turn_model,
+                    nomenclature_model
                 )
+                storage_observer.raise_event(event_type.make_log(log_type.log_type_debug(),
+                                                                 "получение номенклатуры", "nomenclature_service.py/get_nom"))
                 return cur_nom
 
     # ищем по айди, удаляем, возвращаем массив
@@ -78,6 +82,8 @@ class nomenclature_service(abstract_sevice):
             if cur_nom.id == id:
                 self.__data.pop(index)
                 res = True
+                storage_observer.raise_event(event_type.make_log(log_type.log_type_debug(),
+                                                                 "удаление номенклатуры", "nomenclature_service.py/delete_nom"))
                 storage_observer.raise_event(event_type.deleted_nomenclature())
                 break
         return self.__data, res

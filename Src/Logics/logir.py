@@ -3,7 +3,8 @@ from Src.Storage import storage
 from Src.Logics.storage_observer import storage_observer
 from Src.Models.event_type import event_type
 from pathlib import Path
-class logir:
+from Src.Logics.Services import service
+class logir(service):
     __storage=None
     __log=None
     __save_path=Path(__file__).parent.parent/"storage"/"saved_models"/"logs.txt"
