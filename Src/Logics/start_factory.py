@@ -6,18 +6,17 @@ from Src.reference import reference
 from Src.Models.receipe_model import receipe_model
 from Src.Models.storage_row_model import storage_row_model
 from Src.Models.storage_model import storage_model
-from Src.Logics.Services.post_proces_sevices import post_processing_service
 
 # Системное
 from Src.settings import settings
 from Src.Storage.storage import storage
 from Src.exceptions import exception_proxy, operation_exception, argument_exception
+from Src.Logics.Services.log_service import log_service
 
 #
 # Класс для обработки данных. Начало работы приложения
 #
 class start_factory:
-    __observer: post_processing_service = None
     __oprions: settings = None
     __storage: storage = None
     
@@ -27,6 +26,8 @@ class start_factory:
         exception_proxy.validate(_options, settings)
         self.__oprions = _options
         self.__storage = _storage
+        log_service()
+
         
     
     def __save(self, key:str, items: list):
@@ -40,6 +41,7 @@ class start_factory:
         
         if self.__storage == None:
             self.__storage = storage()
+            self.__storage.clear()
             
         self.__storage.data[ key ] = items
         
