@@ -1,53 +1,48 @@
 import json
 from datetime import datetime
+
+from Src.Logics.storage_observer import storage_observer
+
+
 #
 # Класс для обработки и хранения текстовой информации об ошибке
 #
 class error_proxy:
-    __period=None
-    __type=""
-    """
-    Текст с описанием ошибки"""
-    __error_text=""
-    __error_source=""
-    __if_error=False
-
-
-    def __init__ (self, error_text: str="", error_source:str=""):
-        self.__period=datetime.now()
-        self.source=error_source
-        self.text=error_text
+    " Текст с описание ошибки "
+    __error_text = ""
+    __log_type:str = ""
+    __period: datetime = datetime.now()
+    
+    def __init__(self, exception: Exception = None):
+        if exception is not None:
+            self.set_error(exception)
 
     @property
-    def text(self):
-        return self.__error_text
+    def log_type(self) -> str:
+        """
+            Тип логирования
+        Returns:
+            str: _description_    
+        """
+        return self.__log_type     
 
 
-    
-    @text.setter
-    def text(self,value:str):
-        if not isinstance(value,str):
-            raise Exception("Error")
+    @log_type.setter
+    def log_type(self, value:str):
+        """
+            Тип логирования
+        Returns:
+            str: _description_    
+        """    
+        self.__log_type = value
+          
 
-        
-        if value.strip()==" ":
-            self.__if_error=False
-            return 0
     @property
-    
-    def source(self):
-        return self.__error_source
-
-    
-    @source.setter
-    def source(self,value:str):
-        if not isinstance(value,str):
-            raise Exception("Error")
-
-        if value.strip()==" ":
-            self.__if_error=False
-            return 0
-        
+    def period(self):
+        """
+            Дата создания сообщения
+        """
+        return self.__period
     
     @property
     def error(self):
@@ -56,14 +51,14 @@ class error_proxy:
         Returns:
             str: _description_
         """
-        return self._error_text
+        return self.__error_text
     
     @error.setter
     def error(self, value: str):
         if value == "":
             raise Exception("Некорректно переданы параметры!")
             
-        self._error_text = value
+        self.__error_text = value
         
     @classmethod
     def set_error(self, exception: Exception):
@@ -74,10 +69,13 @@ class error_proxy:
         """
         
         if exception  is None:
-            self._error_text = ""
+            self.__error_text = ""
             return
             
-        self._error_text = "Ошибка! " + str(exception)    
+        self.__error_text = f"Ошибка! {str(exception)}"    
+        error_proxy.write_log(self.__error_text, "ERROR")
+        storage_observer.raise_event( "save_log" )
+
             
     @property        
     def is_empty(self) -> bool:
@@ -86,7 +84,7 @@ class error_proxy:
         Returns:
             bool: _description_
         """
-        if len(self._error_text) != 0:
+        if len(self.__error_text) != 0:
             return False
         else:
             return True       
@@ -95,8 +93,10 @@ class error_proxy:
         """
             Очистить
         """
-        self._error_text = "" 
-        
+        self.__error_text = "" 
+
+    # Фабричные методы   
+
     @staticmethod    
     def create_error_response( app,  message: str, http_code: int = 0):
         """
@@ -120,6 +120,7 @@ class error_proxy:
         
         # Формируем описание        
         json_text = json.dumps({"details" : message}, sort_keys = True, indent = 4,  ensure_ascii = False)  
+        error_proxy.write_log(f"Сформирован ответ от сервера. Содержание:\n{json_text}", "ERROR") 
         
         # Формируем результат
         result = app.response_class(
@@ -129,20 +130,18 @@ class error_proxy:
         )    
         
         return result
-    
-    @property
-    def period(self):
-        return self.__period
-
-
-    @property 
-    def log_type(self):
-        return self.__type
-
-
-    @log_type.setter
-    def log_type(self,value:str):
-        if not isinstance(value,str):
-            raise Exception("Error")
-        self.__type=value
             
+    @staticmethod
+    def write_log(message: str, log_type:str = "INFO" ):
+        """
+            Сформировать сообщение для записи лога
+        """
+        observer_item = storage_observer.get( storage_observer .log_service_key() )
+        if observer_item is not None:
+            item = error_proxy()
+            item.error = message
+            item.log_type = log_type
+
+            observer_item.item = item
+            storage_observer.raise_event( "write_log" )
+                

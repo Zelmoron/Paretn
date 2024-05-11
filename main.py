@@ -117,7 +117,7 @@ def add_nomenclature():
         item = nomenclature_model().load(data)
         source_data = start.storage.data[  storage.nomenclature_key() ]
         result = reference_service( source_data ).add( item )
-        return service.create_response( {"result": result} )
+        return service.create_response( app, {"result": result} )
     except Exception as ex:
         return error_proxy.create_error_response(app,   f"Ошибка при добавлении данных!\n {ex}")
 
@@ -132,7 +132,7 @@ def delete_nomenclature():
         item = nomenclature_model().load(data)
         source_data = start.storage.data[  storage.nomenclature_key() ]
         result = reference_service( source_data ).delete( item )
-        return service.create_response( {"result": result} )
+        return service.create_response( app, {"result": result} )
     except Exception as ex:
         return error_proxy.create_error_response(app,   f"Ошибка при удалении данных!\n {ex}")
 
@@ -147,7 +147,7 @@ def change_nomenclature():
         item = nomenclature_model().load(data)
         source_data = start.storage.data[  storage.nomenclature_key() ]
         result = reference_service( source_data ).change( item )
-        return service.create_response( {"result": result} )
+        return service.create_response( app, {"result": result} )
     except Exception as ex:
         return error_proxy.create_error_response(app,   f"Ошибка при изменении данных!\n {ex}")
     
@@ -172,6 +172,19 @@ def get_nomenclature():
             return error_proxy.create_error_response(app,   f"Ошибка при получении данных!\n {ex}")
 
 
+@app.route("/api/nomenclature/accepted", methods = ["GET"])
+def accepted_nomenclature():
+    """
+        Применить изменения. Сохранить в файл
+    """
+    try:
+        start.storage.save()
+        return service.create_response(app, {"result": True})
+    except Exception as ex:
+        return error_proxy.create_error_response(app,   f"Ошибка при сохранении данных!\n {ex}")
+
+
+
 # Номенклатура
 
 @app.route("/api/block_period", methods=["GET"])
@@ -191,4 +204,4 @@ def get_block_period():
 
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(host="0.0.0.0", port=5000, debug = True)

@@ -4,6 +4,11 @@ import os
 from Src.exceptions import operation_exception, exception_proxy
 from Src.Logics.convert_factory import convert_factory
 from Src.reference import reference
+from Src.Logics.storage_observer import storage_observer
+from Src.Models.event_type import event_type
+from Src.errors import error_proxy
+from Src.settings import settings
+from Src.settings_manager import settings_manager
 
 
 #
@@ -13,6 +18,7 @@ class storage():
     __data = {}
     __storage_file = "storage.json"
     __mapping = {}
+    __options:settings = None
     
     def __new__(cls):
         if not hasattr(cls, 'instance'):
@@ -21,20 +27,30 @@ class storage():
         return cls.instance  
     
     def __init__(self) -> None:
+        self.__options = settings_manager().settings
+
         # Связка для всех моделей
         for  inheritor in reference.__subclasses__():
             self.__mapping[inheritor.__name__] = inheritor
 
-    
+    def clear(self):
+        """
+            Очистить данные
+        """
+        self.__data = {}
+        for key in storage.storage_keys(self):
+            self.__data[ key ] = []
+
     @property
     def data(self) -> dict:
         """
-         Данные по моделям
+            Получить все данные
 
         Returns:
-            _type_: _description_
+            _type_: словарь
         """
         return self.__data
+    
     
     def load(self):
         """
@@ -43,15 +59,16 @@ class storage():
             operation_exception: _description_
         """
         try:
-            file_path = os.path.split(__file__)
-            data_file = "%s/%s" % (file_path[0], self.__storage_file)
+            data_file = "%s/%s" % (  self.__options.current_path, self.__storage_file)
             if not os.path.exists(data_file):
-                raise operation_exception(f"Невозможно загрузить данные! Не найден файл {data_file}")
+                self.save()
+                return self.load()
 
+            error_proxy.write_log(f"Загружаем данные из файла {data_file}")
             with open(data_file, "r") as read_file:
                 source =  json.load(read_file)   
                 
-                self.__data = {}
+                self.clear()
                 for key in storage.storage_keys(storage):
                     if key in source.keys():
                         source_data = source[key]
@@ -72,18 +89,17 @@ class storage():
         Raises:
             operation_exception: _description_
         """
-        file_path = os.path.split(__file__)
-        data_file = "%s/%s" % (file_path[0], self.__storage_file)
-        if not os.path.exists(data_file):
-            raise operation_exception(f"Невозможно загрузить данные! Не найден файл {data_file}")
-
+        data_file = "%s/%s" % (  self.__options.current_path, self.__storage_file)
+        error_proxy.write_log(f"Записываем данные в файл {data_file}")
 
         try:
             factory = convert_factory()
             with open(data_file, "w") as write_file:
+
                 data = factory.serialize( self.data )
                 json_text = json.dumps(data, sort_keys = True, indent = 4, ensure_ascii = False)  
                 write_file.write(json_text)
+                storage_observer.raise_event( event_type.save_log() )
                 
                 return True
         except Exception as ex:
@@ -99,7 +115,7 @@ class storage():
         exception_proxy.validate(turns, list)
         if len(turns) > 0:
             self.__data[ storage.blocked_turns_key() ] = turns
-            self.save()
+            # self.save()
             
             
     @staticmethod
@@ -173,6 +189,7 @@ class storage():
         for method in methods:
             if method.__name__.endswith("_key") and callable(method):
                 keys.append(method())
+        
         return keys
     
 

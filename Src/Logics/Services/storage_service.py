@@ -7,7 +7,8 @@ from Src.Storage.storage import storage
 from Src.Logics.Services.service import service
 from Src.Models.event_type import event_type
 from Src.Logics.storage_observer import storage_observer
-from Src.Models.log_models import log_type
+from Src.reference import reference
+
 
 from datetime import datetime
 
@@ -89,8 +90,6 @@ class storage_service(service):
         # Сформируем результат
         aggregate_key = process_factory.aggregate_key()
         processing = process_factory().create( aggregate_key  )
-        storage_observer.raise_event(event_type.make_log(log_type.log_type_debug(),
-                                                         "создание оборотoв", "storage_service.py/create_turns"))
         return processing().process( calculated_turns )
         
     def create_turns_by_nomenclature(self, start_period: datetime, stop_period: datetime, nomenclature: nomenclature_model) -> list:
@@ -126,8 +125,6 @@ class storage_service(service):
         # Сформируем результат
         aggregate_key = process_factory.aggregate_key()
         processing = process_factory().create( aggregate_key  )
-        storage_observer.raise_event(event_type.make_log(log_type.log_type_debug(),
-                                                         "создание оборотов по номенклатуре ", "storage_service.py/create_turns_by_nomenclature"))
         return processing().process( calculated_turns ) 
     
     def create_turns_only_nomenclature(self, nomenclature: nomenclature_model) -> list:
@@ -171,8 +168,7 @@ class storage_service(service):
                     transactions.append( transaction )
                     
             filter.data = self.data        
-        storage_observer.raise_event(event_type.make_log(log_type.log_type_debug(),"создать об по рецепту", 
-                                                         "storage_service.py/create_reciepe_transactions"))    
+            
         return self.__build_turns( transactions )     
     
     def build_debits_by_receipt(self, receipt: receipe_model) -> list:
@@ -207,7 +203,7 @@ class storage_service(service):
     
     # Набор основных методов   
         
-    def handle_event(self, handle_type: str):
+    def handle_event(self,  handle_type:  str):
         """
             Обработать событие
         Args:

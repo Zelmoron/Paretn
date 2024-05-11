@@ -1,8 +1,11 @@
-from Src.Logics.Services.reference_service import reference
+from Src.reference import reference
+
+
+#
 # Типы событий
 #
 class event_type(reference):
-
+ 
     @staticmethod
     def changed_block_period() -> str:
         """
@@ -12,18 +15,29 @@ class event_type(reference):
         """
         return "changed_block_period"
 
-    @staticmethod 
-    def deleted_nomenclature()->str:
+    @staticmethod
+    def deleted_nomenclature() -> str:
         """
-            Событие удаления номенклатуры
+            Событие о удалении номенклатуры
         Returns:
             str: _description_
         """
         return "deleted_nomenclature"
-    @staticmethod
-    def make_log_key():
-        return f"make_log"
 
     @staticmethod
-    def make_log(type:str,text:str,source:str):
-        return f"make_log {type} {text} {source}"
+    def write_log() -> str:
+        """
+            Событие - запись в лог
+        Returns:
+            str: _description_ 
+        """
+        return "write_log"    
+    
+    @staticmethod
+    def save_log() -> str:
+        """
+            Событие - сохранить лог
+        Returns:
+            str: _description_    
+        """
+        return "save_log"

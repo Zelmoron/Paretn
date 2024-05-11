@@ -6,32 +6,30 @@ from Src.reference import reference
 from Src.Models.receipe_model import receipe_model
 from Src.Models.storage_row_model import storage_row_model
 from Src.Models.storage_model import storage_model
-from Src.Logics.Services.post_proces_sevices import post_processing_service
-from Src.Logics.logir import logir
+
 # Системное
 from Src.settings import settings
 from Src.Storage.storage import storage
 from Src.exceptions import exception_proxy, operation_exception, argument_exception
-from Src.Logics.Services import storage_service
+from Src.Logics.Services.log_service import log_service
+
 #
 # Класс для обработки данных. Начало работы приложения
 #
 class start_factory:
-    __observer: post_processing_service = None
     __oprions: settings = None
     __storage: storage = None
-    __logger=None
+    
     def __init__(self, _options: settings,
                  _storage: storage = None) -> None:
         
         exception_proxy.validate(_options, settings)
         self.__oprions = _options
         self.__storage = _storage
-        
-    def __create_logs(self):
-        self.__logger=logir()
-        self.storage.data[storage.logs_key()]=[]
+        log_service()
 
+        
+    
     def __save(self, key:str, items: list):
         """
             Сохранить данные
@@ -43,6 +41,7 @@ class start_factory:
         
         if self.__storage == None:
             self.__storage = storage()
+            self.__storage.clear()
             
         self.__storage.data[ key ] = items
         
@@ -282,24 +281,7 @@ class start_factory:
                 raise operation_exception(f"Ошибка при формировании шаблонных данных!\n{ex}")     
 
             
-    def __build(self,nom:list):
-        if self.__storage==None:
-            self.__storage=storage()
-        nom=start_factory.create_nomenclature()
-        self.__storage.data[storage.nomenclature_key()]=nom[0]
-        self.__storage.data[storage.unit_key()]=nom[1]      
-        self.__storage.data[storage.group_key()]=nom[2]
-        self.__storage.data[storage.reciepe_key()]=nom[3]
-        self.__storage.data[storage.journal_key()]=nom[4]
-        serv=storage_service(nom[4])
-        serv.options=self.__options
-        serv.create_blocked_turns()
-        self.__add_post_processing()
-        self.__save()
-        """
-        add
-        """
-        self.__create_logs()     
+        
             
             
             

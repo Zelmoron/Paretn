@@ -2,6 +2,8 @@ from Src.settings_manager import settings_manager
 from Src.Logics.start_factory import start_factory
 from Src.Logics.Services.storage_service import storage_service
 from Src.Storage.storage import storage
+from Src.Logics.Services.log_service import log_service
+
 import unittest
 from datetime import datetime
 
@@ -11,6 +13,10 @@ from datetime import datetime
 #
 class settings_test(unittest.TestCase):
     
+    def __init__(self, methodName: str = "runTest") -> None:
+        super().__init__(methodName)
+        log_service()
+
     # 
     # Проверить действие наблюдателя при изменении даты блокировки
     #
@@ -21,7 +27,7 @@ class settings_test(unittest.TestCase):
         start.create()
         key = storage.storage_transaction_key()
         transactions_data = start.storage.data[ key ]
-        service = storage_service(transactions_data)
+        storage_service(transactions_data)
         
         # Действие
         try:
