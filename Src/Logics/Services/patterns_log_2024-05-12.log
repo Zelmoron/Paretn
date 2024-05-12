@@ -1,0 +1,20 @@
+[
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-12"
+    },
+    {
+        "error": "Ошибка! Некорректный тип данных. Тип данных list. Ожидается: <class 'Src.errors.error_proxy'>",
+        "is_empty": false,
+        "log_type": "ERROR",
+        "period": "2024-05-12"
+    },
+    {
+        "error": "Ошибка! Некорректный тип данных. Тип данных list. Ожидается: <class 'Src.errors.error_proxy'>",
+        "is_empty": false,
+        "log_type": "ERROR",
+        "period": "2024-05-12"
+    }
+]

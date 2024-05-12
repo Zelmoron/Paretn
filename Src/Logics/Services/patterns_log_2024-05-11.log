@@ -1,0 +1,212 @@
+[
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Ошибка! Некорректно переданы параметры!",
+        "is_empty": false,
+        "log_type": "ERROR",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Ошибка! Некорректная длина аргумента. Ожидается 50",
+        "is_empty": false,
+        "log_type": "ERROR",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Добавлен новый объект. Модель nomenclature_model",
+        "is_empty": false,
+        "log_type": "DEBUG",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Ошибка! Невозможно сформировать список транзакций для списания т.к. нет достаточно остатков!",
+        "is_empty": false,
+        "log_type": "ERROR",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Удален объект. Модель nomenclature_model",
+        "is_empty": false,
+        "log_type": "DEBUG",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Добавлен новый объект. Модель nomenclature_model",
+        "is_empty": false,
+        "log_type": "DEBUG",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Изменен объект. Модель nomenclature_model",
+        "is_empty": false,
+        "log_type": "DEBUG",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Удален объект. Модель nomenclature_model",
+        "is_empty": false,
+        "log_type": "DEBUG",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Удален объект. Модель nomenclature_model",
+        "is_empty": false,
+        "log_type": "DEBUG",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Загружаем данные из файла ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    },
+    {
+        "error": "Записываем данные в файл ./Src/storage.json",
+        "is_empty": false,
+        "log_type": "INFO",
+        "period": "2024-05-11"
+    }
+]
