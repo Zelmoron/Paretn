@@ -9,7 +9,7 @@ from Src.Logics.Services.storage_service import storage_service
 from Src.Models.nomenclature_model import nomenclature_model
 from Src.Logics.Services.service import service
 from Src.Logics.Services.reference_service import reference_service
-
+from Src.Logics.Services.log_service import log_service
 
 
 app = Flask(__name__)
@@ -129,6 +129,11 @@ def delete_nomenclature():
     """
     try:
         data = request.get_json()
+
+        service = log_service()
+        service.item = data
+        service.handle_event("write_log")
+
         item = nomenclature_model().load(data)
         source_data = start.storage.data[  storage.nomenclature_key() ]
         result = reference_service( source_data ).delete( item )
@@ -156,10 +161,14 @@ def get_nomenclature():
     """
         Получить список номенклатуры
     """
+    print("test")
     args = request.args
     if "id" not in args.keys():
         # Вывод всех элементов
         source_data = start.storage.data[  storage.nomenclature_key() ]
+        service = log_service()
+        service.item = source_data
+        service.handle_event("write_log")
         result = reference_service(source_data ).get()
         return service.create_response(app, result)
     else:

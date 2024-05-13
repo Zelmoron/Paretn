@@ -49,7 +49,7 @@ class settings_manager(object):
             return
 
         try:
-            with open(settings_file, "r") as read_file:
+            with open(settings_file, "r",encoding='utf-8') as read_file:
                 self._data = json.load(read_file)     
         except:
             self._error.set_error( Exception("ERROR: Невозможно загрузить настройки! Не найден файл %s", settings_file))     
@@ -104,7 +104,7 @@ class settings_manager(object):
             file_path = os.path.split(__file__)
             settings_file = "%s/%s" % (file_path[0], self._settings_file_name)
 
-            with open(settings_file, "w") as write_file:
+            with open(settings_file, "w",encoding='utf-8') as write_file:
                 data = factory.serialize( self._settings )
                 json_text = json.dumps(data, sort_keys = True, indent = 4, ensure_ascii = False)  
                 write_file.write(json_text)
