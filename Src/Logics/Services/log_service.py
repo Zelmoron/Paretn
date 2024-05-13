@@ -72,6 +72,7 @@ class log_service(service):
         # Добавить запись в лог
         if handle_type == event_type.write_log() and self.__item is not None:
             self.__data.append(self.__item)
+            #добавил консольное логирование
             print(self.get_log_record(self.__item))
             
         # Записать лог в файл и очистить    
