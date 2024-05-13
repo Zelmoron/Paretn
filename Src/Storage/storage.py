@@ -65,7 +65,7 @@ class storage():
                 return self.load()
 
             error_proxy.write_log(f"Загружаем данные из файла {data_file}")
-            with open(data_file, "r",encoding='utf-8') as read_file:
+            with open(data_file, "r") as read_file:
                 source =  json.load(read_file)   
                 
                 self.clear()
@@ -94,7 +94,7 @@ class storage():
 
         try:
             factory = convert_factory()
-            with open(data_file, "w",encoding='utf-8') as write_file:
+            with open(data_file, "w") as write_file:
 
                 data = factory.serialize( self.data )
                 json_text = json.dumps(data, sort_keys = True, indent = 4, ensure_ascii = False)  

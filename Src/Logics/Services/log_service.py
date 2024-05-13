@@ -34,12 +34,6 @@ class log_service(service):
         exception_proxy.validate(value, error_proxy)
         self.__item = value
 
-    def get_log_record(self, data):
-        factory = convert_factory()
-        data = factory.serialize( data )
-        json_text = json.dumps(data, sort_keys = True, indent = 4, ensure_ascii = False)  
-        return json_text
-
     def __observe_save_log(self):
         """
             Сохранить лог и очистить историю
@@ -53,8 +47,10 @@ class log_service(service):
                 os.remove(log_file)
 
             factory = convert_factory()
-            with open(log_file, "w") as write_file:  
-                write_file.write(self.get_log_record(data))
+            with open(log_file, "w") as write_file: 
+                data = factory.serialize( data )
+                json_text = json.dumps(data, sort_keys = True, indent = 4, ensure_ascii = False)  
+                write_file.write(json_text)
 
         except Exception as ex:
             raise Exception(f"Ошибка при записи файла {log_file}\n{ex}")        
@@ -72,8 +68,6 @@ class log_service(service):
         # Добавить запись в лог
         if handle_type == event_type.write_log() and self.__item is not None:
             self.__data.append(self.__item)
-            #добавил консольное логирование
-            print(self.get_log_record(self.__item))
             
         # Записать лог в файл и очистить    
         if handle_type == event_type.save_log():

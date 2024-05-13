@@ -8,7 +8,6 @@ services:
       - ./settings.prod.json:/app/Src/settings.json  
       - ./storage.prod.json:/app/Src/storage.json
 
-
   patterns-command:
     container_name: patterns-command
     image: patterns
@@ -18,19 +17,5 @@ services:
       - ./settings.prod.json:/app/Src/settings.json  
       - ./storage.prod.json:/app/Src/storage.json    
 
-# для portainer
 
-  twportainer:
-    image: portainer/portainer-ce:latest
-    container_name: twportainer
-    environment:
-      - TZ=Europe/Moscow
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /opt/twportainer/portainer_data:/data
-    ports:
-      - "8000:8000"
-      - "9443:9443"
-      - "9000:9000"
-    restart: always
     
