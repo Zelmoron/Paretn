@@ -82,4 +82,11 @@ class storage_observer:
         """
         return "log_service"
 
-   
+    @staticmethod     
+    def console_log_service_key() -> str:
+        """
+            Ключ log_console_service_key
+        Returns:
+            str: _description_
+        """
+        return "console_log_service"

@@ -6,7 +6,7 @@ from Src.reference import reference
 from Src.Models.receipe_model import receipe_model
 from Src.Models.storage_row_model import storage_row_model
 from Src.Models.storage_model import storage_model
-
+from Src.Logics.Services.log_sevice_cons import log_service_cons
 # Системное
 from Src.settings import settings
 from Src.Storage.storage import storage
@@ -27,7 +27,7 @@ class start_factory:
         self.__oprions = _options
         self.__storage = _storage
         log_service()
-
+        log_service_cons()
         
     
     def __save(self, key:str, items: list):
